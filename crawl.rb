@@ -1,9 +1,14 @@
 require 'open-uri'
 require 'nokogiri'
 
-puts "Site name"
-url = gets.chomp
 
-page = Nokogiri::HTML(open(url))
-content = page.css('span').collect{ |node| node.text}.join(" ")
-puts content
+185774.upto(185774 + 50) do |i|
+  url = "https://www.udemy.com/#{i}/"
+  begin
+    page = Nokogiri::HTML(open(url))
+    content = page.css('.mt5 a').collect{ |node| node["href"] }
+    puts content
+  rescue
+    puts "Error"
+  end
+end
