@@ -11,8 +11,8 @@ require_relative 'crawler'
 # social media accounts
 
 profiles = []
-1.times do |t|
-  url = "https://www.udemy.com/314462"
+150000.upto(150100) do |t|
+  url = "https://www.udemy.com/#{t}"
   profile = ProfileCrawler.crawl(url)
   profiles << profile
   puts t
