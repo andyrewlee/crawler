@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'nokogiri'
+require "csv"
 require_relative 'crawler'
 
 # title
@@ -9,7 +10,18 @@ require_relative 'crawler'
 # number of students enrolled
 # social media accounts
 
-url = "https://www.udemy.com/185774"
+profiles = []
+185774.upto(185774 + 50) do |t|
+  url = "https://www.udemy.com/#{t}"
+  profile = ProfileCrawler.crawl(url)
+  profiles << profile
+  puts t
+  puts profile
+end
 
-profile = ProfileCrawler.crawl(url)
-puts profile
+CSV.open("file.csv", "ab") do |csv|
+#  csv << ["Title", "Rate Count", "Average Rating", "Students Enrolled", "Instructor Name", "Instructor Bio", "Twitter", "Facebook", "Google", "YouTube", "LinkedIn", "Website"]
+  profiles.each do |p|
+    csv << [p.title, p.rate_count, p.average_rating, p.students_enrolled, p.instructor_name, p.instructor_bio, p.twitter, p.facebook, p.google, p.youtube, p.linkedin, p.website] if p != nil && !p.title.empty?
+  end
+end
