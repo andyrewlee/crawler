@@ -3,6 +3,7 @@ class ProfileCrawler
     begin
       page = Nokogiri::HTML(open(url))
       title = page.css('h1.course-title')[0].text.strip
+      category = page.css('.cats').collect { |node| node.text.gsub(/\s+/, '') }.join(", ")
       rate_count = page.css('.rate-count')[0].text.strip
       average_rating = page.css('.average-rate')[0].text.strip
       instructor_name = page.css('.ins-name')[0].text
@@ -36,7 +37,7 @@ class ProfileCrawler
       # splits stats into array with only numbers
       stats = rate_count.scan(/\d+/)
 
-      profile = Profile.new(title, stats[0], average_rating, stats[1], instructor_name, instructor_bio, twitter, facebook, google, youtube, linkedin, website)
+      profile = Profile.new(title, category, stats[0], average_rating, stats[1], instructor_name, instructor_bio, twitter, facebook, google, youtube, linkedin, website)
       return profile
     rescue
       return nil
@@ -45,9 +46,10 @@ class ProfileCrawler
 end
 
 class Profile
-  attr_accessor :title, :rate_count, :average_rating, :students_enrolled, :instructor_name, :instructor_bio, :twitter, :facebook, :google, :youtube, :linkedin, :website
-  def initialize(title, rate_count, average_rating, students_enrolled, instructor_name, instructor_bio, twitter, facebook, google, youtube, linkedin, website)
+  attr_accessor :title, :category, :rate_count, :average_rating, :students_enrolled, :instructor_name, :instructor_bio, :twitter, :facebook, :google, :youtube, :linkedin, :website
+  def initialize(title, category, rate_count, average_rating, students_enrolled, instructor_name, instructor_bio, twitter, facebook, google, youtube, linkedin, website)
     @title = title
+    @category = category
     @rate_count = rate_count
     @average_rating = average_rating
     @students_enrolled = students_enrolled
@@ -63,6 +65,7 @@ class Profile
 
   def to_s
     "Title: #{@title}\n
+     Category: #{@category}\n
      Rate Count: #{@rate_count}\n
      Average Rating: #{@average_rating}\n
      Students Enrolled: #{@students_enrolled}\n

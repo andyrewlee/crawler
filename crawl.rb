@@ -11,8 +11,8 @@ require_relative 'crawler'
 # social media accounts
 
 profiles = []
-185774.upto(185774 + 50) do |t|
-  url = "https://www.udemy.com/#{t}"
+1.times do |t|
+  url = "https://www.udemy.com/314462"
   profile = ProfileCrawler.crawl(url)
   profiles << profile
   puts t
@@ -20,8 +20,8 @@ profiles = []
 end
 
 CSV.open("file.csv", "ab") do |csv|
-#  csv << ["Title", "Rate Count", "Average Rating", "Students Enrolled", "Instructor Name", "Instructor Bio", "Twitter", "Facebook", "Google", "YouTube", "LinkedIn", "Website"]
+#  csv << ["Title", "Category", "Rate Count", "Average Rating", "Students Enrolled", "Instructor Name", "Instructor Bio", "Twitter", "Facebook", "Google", "YouTube", "LinkedIn", "Website"]
   profiles.each do |p|
-    csv << [p.title, p.rate_count, p.average_rating, p.students_enrolled, p.instructor_name, p.instructor_bio, p.twitter, p.facebook, p.google, p.youtube, p.linkedin, p.website] if p != nil && !p.title.empty?
+    csv << [p.title, p.category, p.rate_count, p.average_rating, p.students_enrolled, p.instructor_name, p.instructor_bio, p.twitter, p.facebook, p.google, p.youtube, p.linkedin, p.website] if p != nil && !p.title.empty?
   end
 end
